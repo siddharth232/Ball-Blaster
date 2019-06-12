@@ -1,7 +1,7 @@
-var c=document.getElementById('canvas').getContext("2d");
-var img=new Image();
-  img.src="tanks.png";
-	function makeSquare(x, y, length, speed) {
+var c = document.getElementById('canvas').getContext("2d");
+var img;
+
+function makeSquare(x, y, length, speed) {
   return {
     x: x,
     y: y,
@@ -11,51 +11,52 @@ var img=new Image();
     draw: function() {
       c.fillRect(this.x, this.y, this.w, this.h);
     }
-  };}
-  function makeenemy(x,y,radius,speedx,speedy,strength){
-    return{
-      x:x,
-      y:y,
-      r:radius,
-      sx:speedx,
-      sy:speedy,
-      num:strength,
-      num2:strength,
-     
-      draw: function(){
-        c.beginPath();
-        c.arc(this.x,this.y,this.r,0,2*Math.PI,true);
-        c.fill();
-        c.fillStyle="#FFFFFF";
-        c.font = '10px Arial';
-        c.fillText(this.num,this.x-6,this.y+3);
-      }
+  };
+}
+function makeenemy(x,y,radius,speedx,speedy,strength){
+  return{
+    x:x,
+    y:y,
+    r:radius,
+    sx:speedx,
+    sy:speedy,
+    num:strength,
+    num2:strength,
+    
+    draw: function(){
+      c.beginPath();
+      c.arc(this.x,this.y,this.r,0,2*Math.PI,true);
+      c.fill();
+      c.fillStyle="#FFFFFF";
+      c.font = '10px Arial';
+      c.fillText(this.num,this.x-6,this.y+3);
     }
   }
-  function makearrayenemy(){
-    if (Math.floor(Math.random() * 2)) {
-      var enemyX=0;
-    }else{
-      var enemyX=canvas.width;
-    }
-    var enemysize=10;
-    var enemyY=Math.floor(Math.random() * (3*canvas.height/4));
-    var enemyspeedx=1;
-    var enemyspeedy=1;
-    var strength=Math.floor(Math.random() * 50);
-    enemies.push(makeenemy(enemyX,enemyY,enemysize,enemyspeedx,enemyspeedy,strength));
+}
+function makearrayenemy(){
+  if (Math.floor(Math.random() * 2)) {
+    var enemyX=0;
+  }else{
+    var enemyX=canvas.width;
   }
-  function maketank(x,y,w,h){
-    return{
-      x:x,
-      y:y,
-      w:w,
-      h:h,
-      draw:function(){
-      c.drawImage(img,this.x,this.y,this.w,this.h);
-    }
-    };
+  var enemysize=10;
+  var enemyY=Math.floor(Math.random() * (3*canvas.height/4));
+  var enemyspeedx=1;
+  var enemyspeedy=1;
+  var strength=Math.floor(Math.random() * 50);
+  enemies.push(makeenemy(enemyX,enemyY,enemysize,enemyspeedx,enemyspeedy,strength));
+}
+function maketank(x,y,w,h){
+  return{
+    x:x,
+    y:y,
+    w:w,
+    h:h,
+    draw:function(){
+    c.drawImage(img,this.x,this.y,this.w,this.h);
   }
+  };
+}
    
 
   var tank=maketank(canvas.width/2,canvas.height-30,30,30);
@@ -231,10 +232,11 @@ function gameover1(){
   }
 }
 function start(){
+  img = new Image();
+  img.src="tanks.png";
   img.onload=function()
-
-{   
- // console.log("sid");
+  {   
+  console.log("sid");
   name=document.getElementById("name").value;
    if(name.length>=10||name.length==0){
     alert("Enter some name with less than 10 letter");
