@@ -44,7 +44,7 @@ function makearrayenemy(){
   var enemyY=Math.floor(Math.random() * (3*canvas.height/4));
   var enemyspeedx=1;
   var enemyspeedy=1;
-  var strength=Math.floor(Math.random() * 50);
+  var strength=Math.floor(Math.random() * 50)*2;
   enemies.push(makeenemy(enemyX,enemyY,enemysize,enemyspeedx,enemyspeedy,strength));
 }
 function maketank(x,y,w,h,s){
