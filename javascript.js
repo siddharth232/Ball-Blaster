@@ -64,12 +64,12 @@ function maketank(x,y,w,h,s){
 
   var tank=maketank(canvas.width/2,canvas.height-30,30,30,10);
  // var bullet = makeSquare(0,0, 2, 5);
- // var shooting = false;
+  var shooting = false;
   var right = false;
   var left = false;
   var space=false;
   var enemies=[];
-  var bullet=[];
+  var bullets=[];
   var time;
   var timegap=10000;
   var name;
@@ -100,9 +100,9 @@ function keyUpHandler(e) {
 function shoot() {
  // if (!shooting) {
  //   shooting = true;
-    bullet.push(makeSquare(0,0, 2, 5));
-    bullet[bullet.length-1].x=tank.x+tank.w/2;
-    bullet[bullet.length-1].y=tank.y+tank.h/2;
+    bullets.push(makeSquare(0,0, 2, 5));
+    bullets[bullets.length-1].x=tank.x+tank.w/2;
+    bullets[bullets.length-1].y=tank.y+tank.h/2;
 
  //   bullet.x = tank.x + tank.w/2;
  //   bullet.y = tank.y + tank.h/2 ;
@@ -172,12 +172,12 @@ function draw(){
   c.fillStyle="#000000";
   tank.draw();
 
-    bullet.forEach(function(bullet,i){ 
+    bullets.forEach(function(bullet,i1){ 
     bullet.y-=bullet.s;
     enemies.forEach(function(enemy,i){
       if(isColliding(bullet,enemy)){
           if(enemy.num>1){enemy.num--;
-                  // bullet.splice(i,1);  
+             //     bullet.splice(i,1);  
           }
           else{
            
@@ -196,11 +196,12 @@ function draw(){
               enemies.push(makeenemy(enemyX,enemyY,enemysize,-enemyspeedx,enemyspeedy,strength));
               }
             enemies.splice(i,1);
-            bullet.splice(i,1);
+            
             }
        //   shooting=false;
           score++;
           bullet.s+=0.25;
+          bullets.splice(i1,1);
       }
     });
   
