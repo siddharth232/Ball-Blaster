@@ -1,4 +1,4 @@
-var c = document.getElementById('canvas').getContext("2d");
+ var c = document.getElementById('canvas').getContext("2d");
 var img;
 
 function makeSquare(x, y, length, speed) {
@@ -6,10 +6,11 @@ function makeSquare(x, y, length, speed) {
     x: x,
     y: y,
     w: length,
-    h:length,
+    h:length+5,
     s: speed,
     draw: function() {
       c.fillRect(this.x, this.y, this.w, this.h);
+
     }
   };
 }
@@ -46,26 +47,29 @@ function makearrayenemy(){
   var strength=Math.floor(Math.random() * 50);
   enemies.push(makeenemy(enemyX,enemyY,enemysize,enemyspeedx,enemyspeedy,strength));
 }
-function maketank(x,y,w,h){
+function maketank(x,y,w,h,s){
   return{
     x:x,
     y:y,
     w:w,
     h:h,
+    s:s,
     draw:function(){
     c.drawImage(img,this.x,this.y,this.w,this.h);
+
   }
   };
 }
    
 
-  var tank=maketank(canvas.width/2,canvas.height-30,30,30);
-  var bullet = makeSquare(0,0, 5, 7);
-  var shooting = false;
+  var tank=maketank(canvas.width/2,canvas.height-30,30,30,10);
+ // var bullet = makeSquare(0,0, 2, 5);
+ // var shooting = false;
   var right = false;
   var left = false;
   var space=false;
   var enemies=[];
+  var bullet=[];
   var time;
   var timegap=10000;
   var name;
@@ -94,11 +98,16 @@ function keyUpHandler(e) {
     }
 }
 function shoot() {
-  if (!shooting) {
-    shooting = true;
-    bullet.x = tank.x + tank.w/2;
-    bullet.y = tank.y + tank.h ;
-  }
+ // if (!shooting) {
+ //   shooting = true;
+    bullet.push(makeSquare(0,0, 2, 5));
+    bullet[bullet.length-1].x=tank.x+tank.w/2;
+    bullet[bullet.length-1].y=tank.y+tank.h/2;
+
+ //   bullet.x = tank.x + tank.w/2;
+ //   bullet.y = tank.y + tank.h/2 ;
+
+//  }
 }
 
 function isWithin(a, b, c) {
@@ -117,7 +126,7 @@ function isColliding(a, b) {
 function draw(){ 
    
   var gameover=false;
-	c.clearRect(0,0,canvas.width,canvas.height);
+  c.clearRect(0,0,canvas.width,canvas.height);
   enemies.forEach(function(enemy){
     enemy.x+=enemy.sx;
     enemy.y+=enemy.sy;
@@ -146,25 +155,30 @@ function draw(){
             
     }
   });
-	if(right){
-		tank.x+=tank.s;
-	}
-	if(left){
-		tank.x-=tank.s;
-	}
-	if (tank.x<0) {
-		tank.x=0;
-	}
-	if(tank.x>(canvas.width-tank.w)){
-		tank.x=canvas.width-tank.w;
-	}
+  if(right){
+    tank.x+=tank.s;
+    console.log("sid");
+  }
+  if(left){
+    tank.x-=tank.s;
+    console.log("sid");
+  }
+  if (tank.x<0) {
+    tank.x=0;
+  }
+  if(tank.x>(canvas.width-tank.w)){
+    tank.x=canvas.width-tank.w;
+  }
   c.fillStyle="#000000";
   tank.draw();
-	if (shooting) {
-		bullet.y-=bullet.s;
+
+    bullet.forEach(function(bullet,i){ 
+    bullet.y-=bullet.s;
     enemies.forEach(function(enemy,i){
       if(isColliding(bullet,enemy)){
-          if(enemy.num>1){enemy.num--;}
+          if(enemy.num>1){enemy.num--;
+                  // bullet.splice(i,1);  
+          }
           else{
            
                var enemyX=enemy.x;
@@ -175,31 +189,32 @@ function draw(){
                if(enemy.num%2==0){
                var strength=enemy.num2/2;}
                else{
-                var strength=(enemy.num2+1)/2;
+                var strength=(enemy.num2-1)/2;
                }
                if(strength!=0){
               enemies.push(makeenemy(enemyX,enemyY,enemysize,enemyspeedx,enemyspeedy,strength));
               enemies.push(makeenemy(enemyX,enemyY,enemysize,-enemyspeedx,enemyspeedy,strength));
-            }
+              }
             enemies.splice(i,1);
+            bullet.splice(i,1);
             }
-          shooting=false;
+       //   shooting=false;
           score++;
           bullet.s+=0.25;
       }
     });
-	
-	  if (bullet.y < 0 ) {
-      shooting = false;
-    } 
+  
+   // if (bullet.y < 0 ) {
+   //   shooting = false;
+ //   } 
     c.fillStyle="#000000";
     bullet.draw();
-}
+}); 
   c.fillStyle = '#000000';
   c.font = '10px Bradley Hand ITC';
   c.textAlign = 'left';
   c.fillText('Score: ' + score, 1, 7);
-	if(gameover){
+  if(gameover){
     gameover1();
   }
   else{
@@ -236,7 +251,7 @@ function start(){
   img.src="tanks.png";
   img.onload=function()
   {   
-  console.log("sid");
+
   name=document.getElementById("name").value;
    if(name.length>=10||name.length==0){
     alert("Enter some name with less than 10 letter");
