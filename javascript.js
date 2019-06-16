@@ -130,6 +130,8 @@ function draw(){
   enemies.forEach(function(enemy){
     enemy.x+=enemy.sx;
     enemy.y+=enemy.sy;
+    enemy.sx=0.25+enemy.sx;
+    enemy.sy=0.25+enemy.sy;
     if (enemy.x<0||enemy.x>(enemy.r+canvas.width)) {
       enemy.sx=-enemy.sx;
     }
