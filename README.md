@@ -1,2 +1,5 @@
-# ball-blaster-with-sprites
-Task02
+# ball-blaster
+  Ball Blaster game replica
+ Software Used:
+ 1.Javascript
+ 
